@@ -7,6 +7,17 @@ on:
     branches-ignore:
       - production
 jobs:
+  Test-Preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test
   Deploy-Preview:
     runs-on: ubuntu-latest
     steps:
@@ -19,3 +30,4 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+    needs: Test-Preview
